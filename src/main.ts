@@ -27,6 +27,8 @@ road.src = "road.png";
 const car = new Image(100, 100)
 car.src = "car.png"
 
+let elapsedTime = 0
+
 const updateGame = (ctx: CanvasRenderingContext2D, state: State) => {
   const newState = update(state, throttle)
 
@@ -42,14 +44,22 @@ const updateGame = (ctx: CanvasRenderingContext2D, state: State) => {
     ctx.font = "35px sans-serif";
     ctx.textAlign = "center"
     ctx.fillText("You made it. Want to try to beat you previous score ?", 500, 500)
+    ctx.fillText(`You took ${elapsedTime} ms`, 500, 600)
     return
   }
   throttle = 0
   ctx.reset()
   ctx.drawImage(road, 0, 0, road.width, road.height);
   ctx.fillStyle = "rgba(0, 255, 0, 0.5)"
-  ctx.fillRect(0, 0, 1000, 100)  
+  ctx.fillRect(0, 0, 1000, 100)
+  ctx.font = "20px sans-serif";
   ctx.drawImage(car, 600, 1000 - (newState.position / 10) - 50, car.width, car.height);
+
+  ctx.fillStyle = "black"
+  ctx.fillText(`Speed: ${newState.speed}`, 50, 50)
+  ctx.fillText(`Elapsed time: ${elapsedTime}`, 50, 70)
+
+  elapsedTime += 10
 
 
   setTimeout(() => updateGame(ctx, newState), 10)
@@ -57,7 +67,7 @@ const updateGame = (ctx: CanvasRenderingContext2D, state: State) => {
 
 const runANewGame = () => {
   if(ctx){
-
+    elapsedTime = 0
     const gameOverParagraph = document.getElementById("game-over")
     if(gameOverParagraph){
       gameOverParagraph.innerText = "Go go go !"
