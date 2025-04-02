@@ -21,6 +21,12 @@ let stop = false;
 const canvas: HTMLCanvasElement = document.getElementById("canvas") as HTMLCanvasElement
 const ctx = canvas.getContext("2d");
 
+const road = new Image(1000, 1000)
+road.src = "road.png";
+
+const car = new Image(100, 100)
+car.src = "car.png"
+
 const updateGame = (ctx: CanvasRenderingContext2D, state: State) => {
   const newState = update(state, throttle)
 
@@ -40,11 +46,11 @@ const updateGame = (ctx: CanvasRenderingContext2D, state: State) => {
   }
   throttle = 0
   ctx.reset()
-  ctx.fillStyle = "green"
+  ctx.drawImage(road, 0, 0, road.width, road.height);
+  ctx.fillStyle = "rgba(0, 255, 0, 0.5)"
   ctx.fillRect(0, 0, 1000, 100)  
-  ctx.fillStyle = "red"
-  ctx.fillRect(500, 1000 - newState.position / 10, 10, 10)
-  
+  ctx.drawImage(car, 600, 1000 - (newState.position / 10) - 50, car.width, car.height);
+
 
   setTimeout(() => updateGame(ctx, newState), 10)
 }
