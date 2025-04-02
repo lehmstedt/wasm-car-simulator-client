@@ -16,7 +16,6 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 `
 
 let throttle: number = 0;
-let stop = false;
 
 const canvas: HTMLCanvasElement = document.getElementById("canvas") as HTMLCanvasElement
 const ctx = canvas.getContext("2d");
@@ -68,10 +67,6 @@ const updateGame = (ctx: CanvasRenderingContext2D, state: State) => {
 const runANewGame = () => {
   if(ctx){
     elapsedTime = 0
-    const gameOverParagraph = document.getElementById("game-over")
-    if(gameOverParagraph){
-      gameOverParagraph.innerText = "Go go go !"
-    }
     const state = new State()
 
     updateGame(ctx, state);
@@ -85,9 +80,6 @@ document.addEventListener("keydown", (event) => {
   }
   if(event.key === "ArrowDown"){
     throttle = -1;
-  }
-  if(event.key === "Escape"){
-    stop = true;
   }
 })
 
