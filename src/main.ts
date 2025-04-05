@@ -1,5 +1,5 @@
 
-import { State, update } from 'wasm-car-simulator'
+import { Camera, State, update } from 'wasm-car-simulator'
 import './style.css'
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
@@ -28,6 +28,8 @@ car.src = "car.png"
 
 let elapsedTime = 0
 
+const camera = new Camera(1000);
+
 const updateGame = (ctx: CanvasRenderingContext2D, state: State) => {
   const newState = update(state, throttle)
 
@@ -48,11 +50,11 @@ const updateGame = (ctx: CanvasRenderingContext2D, state: State) => {
   }
   throttle = 0
   ctx.reset()
-  ctx.drawImage(road, 0, 0, road.width, road.height);
+  ctx.drawImage(road, 0, camera.project(1000), road.width, road.height);
   ctx.fillStyle = "rgba(0, 255, 0, 0.5)"
-  ctx.fillRect(0, 0, 1000, 100)
+  ctx.fillRect(0, 0, camera.project(0), 100)
   ctx.font = "20px sans-serif";
-  ctx.drawImage(car, 600, 1000 - (newState.position / 10) - 50, car.width, car.height);
+  ctx.drawImage(car, 500, camera.project(newState.position) -50, car.width, car.height);
 
   ctx.fillStyle = "black"
   ctx.fillText(`Speed: ${newState.speed}`, 50, 50)
