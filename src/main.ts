@@ -31,6 +31,7 @@ car.src = "car.png"
 let elapsedTime = 0
 
 const camera = new Camera(screen_size, 10000);
+camera.world_position = 5000;
 
 const updateGame = (ctx: CanvasRenderingContext2D, state: State) => {
   const newState = update(state, throttle)
@@ -50,11 +51,15 @@ const updateGame = (ctx: CanvasRenderingContext2D, state: State) => {
     ctx.fillText(`You took ${elapsedTime} ms`, 500, 600)
     return
   }
+  camera.world_position = newState.position
   throttle = 0
   ctx.reset()
+  ctx.drawImage(road, 0, camera.project(0), road.width, road.height);
   ctx.drawImage(road, 0, camera.project(10000), road.width, road.height);
+  ctx.drawImage(road, 0, camera.project(20000), road.width, road.height);
+  ctx.drawImage(road, 0, camera.project(30000), road.width, road.height);
   ctx.fillStyle = "rgba(0, 255, 0, 0.5)"
-  ctx.fillRect(0, 0, camera.project(0), 100)
+  ctx.fillRect(0, camera.project(25000), screen_size, 500)
   ctx.font = "20px sans-serif";
   ctx.drawImage(car, 500, camera.project(newState.position) -50, car.width, car.height);
 
@@ -72,6 +77,8 @@ const runANewGame = () => {
   if(ctx){
     elapsedTime = 0
     const state = new State()
+    state.position_goal_start = 20000
+    state.position_goal_end = 25000
 
     updateGame(ctx, state);
   }
