@@ -20,7 +20,9 @@ let throttle: number = 0;
 const canvas: HTMLCanvasElement = document.getElementById("canvas") as HTMLCanvasElement
 const ctx = canvas.getContext("2d");
 
-const road = new Image(1000, 1000)
+const screen_size = 1000
+
+const road = new Image(screen_size, screen_size)
 road.src = "road.png";
 
 const car = new Image(100, 100)
@@ -28,7 +30,7 @@ car.src = "car.png"
 
 let elapsedTime = 0
 
-const camera = new Camera(1000);
+const camera = new Camera(screen_size, 10000);
 
 const updateGame = (ctx: CanvasRenderingContext2D, state: State) => {
   const newState = update(state, throttle)
@@ -50,7 +52,7 @@ const updateGame = (ctx: CanvasRenderingContext2D, state: State) => {
   }
   throttle = 0
   ctx.reset()
-  ctx.drawImage(road, 0, camera.project(1000), road.width, road.height);
+  ctx.drawImage(road, 0, camera.project(10000), road.width, road.height);
   ctx.fillStyle = "rgba(0, 255, 0, 0.5)"
   ctx.fillRect(0, 0, camera.project(0), 100)
   ctx.font = "20px sans-serif";
